@@ -5,7 +5,7 @@ import sys
 import re
 
 ## Command
-## python make_inventory <path to collection>
+## python mkinv.py <path to collection>
 ##
 ## Optional Parameters
 ## ===================
@@ -103,7 +103,7 @@ def report(msg, out=False, integ=False):
             q = f.write(msg+'\n')
 
     if out:
-        print('make_inventory exited without finishing.')
+        print('mkinv exited without finishing.')
         sys.exit()
 
 #reading in command line arguments

@@ -1,16 +1,16 @@
-Using make_inventory
-====================
+Using mkinv
+===========
 
 This tool takes as input a path to a PDS4 collection and outputs an inventory
 file, which contains a list of each product LIDVID in the collection.
 
-make_inventory is a Python script run by the Python interpreter and therefore
+mkinv is a Python script run by the Python interpreter and therefore
 requires Python (3.x) to use. Make sure to place the tool somewhere in your
 Python PATH.
 
 The basic command for running the script is:
 
-python make_inventory <path to collection>
+python mkinv.py <path to collection>
 
 The input path should either be to the root directory of the collection, or to a
 collection file in the root directory of the collection. If the path is to a
