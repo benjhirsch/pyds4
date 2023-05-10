@@ -23,13 +23,6 @@ args = sys.argv
 
 #methods
 
-def get_path(file):
-    return '/'.join(re.split('[/\\\\]', file)[:-1])
-
-def get_filename(file):
-    #just name, not extension
-    return '.'.join(re.split('[/\\\\]', file)[-1].split('.')[:-1])
-
 def get_arg(param, else_name='', flag=False, req=False):
     if flag:
         #true if flag is present, false otherwise
@@ -95,8 +88,8 @@ if get_arg('-h', flag=True) or get_arg('--help', flag=True):
 debug = get_arg('-d', flag=True)
 fits_file = fix_path(get_arg('-f', req=True), exist=True)
 kw_file = fix_path(get_arg('-k', req=True), exist=True)
-pds3_file = fix_path(get_arg('-l', '%s/%s.lbl' % (get_path(fits_file), get_filename(fits_file))), exist = get_arg('-l', flag=True))
-out_file = fix_path(get_arg('-o', '%s/%s.kwl' % (get_path(fits_file), get_filename(fits_file))))
+pds3_file = fix_path(get_arg('-l', '%s/%s.lbl' % (os.path.dirname(fits_file), os.path.splitext(os.path.basename(fits_file))[0])), exist = get_arg('-l', flag=True))
+out_file = fix_path(get_arg('-o', '%s/%s.kwl' % (os.path.dirname(fits_file), os.path.splitext(os.path.basename(fits_file))[0])))
 
 #get keyword list
 with open(kw_file, newline='') as f:
@@ -126,7 +119,7 @@ for kt in kw_lists:
 output_list = []
 
 #no matter what, assign filename to a keyword
-add_to_out('FILENAME', value=get_filename(fits_file))
+add_to_out('FILENAME', value=os.path.splitext(os.path.basename(fits_file))[0])
 
 #get pds3 keywords
 if 'PDS3' in kw_lists.keys() and os.path.isfile(pds3_file):

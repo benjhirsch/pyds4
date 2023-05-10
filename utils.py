@@ -10,17 +10,6 @@ def flist(path, ext='', excl=[]):
         fl.extend([os.path.normpath(os.path.join(root, fn)) for fn in file if fn.endswith(ext) and all([re.search(e, fn) is None for e in excl])])
     return fl
 
-def fpath(path):
-    '''returns path of a file without the filename'''
-    return '/'.join(re.split('[/\\\\]', path)[:-1])
-
-def fname(path, ext=True):
-    '''returns just the filename of a path, with no extension if ext=False'''
-    if ext:
-        return re.split('[/\\\\]', path)[-1]
-    else:
-        return '.'.join(re.split('[/\\\\]', path)[-1].split('.')[:-1])
-
 def make80(input_string, line_limit=80):
     '''returns a list of lines no longer than 80 characters'''
     para_split = input_string.split('\n')

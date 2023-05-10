@@ -11,7 +11,7 @@ Python (3.x) to use. Make sure to place the tool somewhere in your Python PATH.
 
 The basic command for running the script is:
 
-python kwex -f <path to fits file> -k <path to csv file>
+python kwex.py -f <path to fits file> -k <path to csv file>
 
 With this command, it will read the FITS file along with any PDS3 label that has
 the same name (and a .lbl extension) and output a .kwl file of the same name in

@@ -81,9 +81,6 @@ def get_arg(param, flag=False, default_value=None, opt_param=False):
     else:
         report('%s parameter not found' % param, out=True)
         
-def get_filename(fp):
-    return re.split('[/\\\\]', fp)[-1]
-
 #if a product LID does not match the collection LID, it's labeled as a secondary product in the inventory
 def mem_check(lid):
     if lid.startswith(collection_lid):
@@ -135,7 +132,7 @@ if os.path.isdir(collection_fp):
     #if the path argument is to a directory, check to see if there happens to be a collection file in the usual place.
     collection_path = collection_fp
     test_collection = '%s/collection.%s' % (collection_fp, lbl_ext)
-    collection_filename = get_filename(test_collection)
+    collection_filename = os.path.basename(test_collection)
     
     report('No collection file specified. Checking for collection LID.')
     if not get_arg('-l', flag=True):
@@ -160,8 +157,8 @@ elif os.path.isfile(collection_fp):
         report('Overriding extracted "%s" with explicit "%s"' % (collection_lid, manual_lid))
         collection_lid = manual_lid
 
-    collection_path = '/'.join(re.split('[/\\\\]', collection_fp)[:-1])
-    collection_filename = get_filename(collection_fp)
+    collection_path = os.path.dirname(collection_fp)
+    collection_filename = os.path.basename(collection_fp)
 else:
     report('No valid collection file or directory.', out=True)
 
@@ -186,7 +183,7 @@ inv_list = []
 
 for file in fl:
     #go through each file, but ignore the collection file
-    if not get_filename(file) == collection_filename:
+    if not os.path.basename(file) == collection_filename:
         #iteratively parse each label rather than loading the entire thing, and stop once LID and VID have been identified
         for _, elem in et.iterparse(file):
             if elem.tag == '{%s}logical_identifier' % ns:
@@ -235,7 +232,7 @@ if get_arg('-i', flag=True):
             report('Product LID %s does not match collection LID %s' % (lv, collection_lid))
 
         if woa == 'a' and lv in csv_list:
-            report('LIDVID %s already in %s' % (lv, get_filename(inventory_file)), integ=True)
+            report('LIDVID %s already in %s' % (lv, os.path.basename(inventory_file)), integ=True)
         else:
             #create a new LIDVID list with no duplicates and no already present LIDVIDs
             new_inv.append({'mem': mem_check(lv), 'lid': lv.split('::')[0], 'vid': lv.split('::')[-1]})
